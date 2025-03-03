@@ -93,7 +93,7 @@
     }
   }
 
-  .all-movies {
+  .all-drivers {
     @apply space-y-9;
 
     & ul {
