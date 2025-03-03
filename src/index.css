@@ -101,7 +101,7 @@
     }
   }
 
-  .movie-card {
+  .driver-card {
     @apply bg-dark-100 p-5 rounded-2xl shadow-inner shadow-accent/30 border border-gray-100 transition-transform transform hover:scale-105;
 
     & img {
@@ -132,7 +132,7 @@
       @apply text-sm text-gray-100;
     }
 
-    & .content .lang, & .content .year {
+    & .content .driver-number, & .content .year {
       @apply capitalize text-gray-100 font-medium text-base;
     }
   }

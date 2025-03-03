@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import Search from "./components/Search.jsx";
+import Spinner from "./components/Spinner.jsx";
+import DriverCard from "./components/DriverCard.jsx";
 
 const API_BASE_URL = 'https://api.openf1.org/v1';
 
@@ -37,7 +39,20 @@ const App = () => {
                 return;
             }
 
-            setDriverList(data || []);
+            //sort drivers by full_name ascending
+            const sortedDrivers = data.sort((a, b) => {
+                if(a.full_name < b.full_name){
+                    return -1;
+                }
+
+                if (a.full_name > b.full_name){
+                    return 1;
+                }
+
+                return 0;
+            });
+
+            setDriverList(sortedDrivers || []);
 
         } catch (error) {
             console.error(`Error fetching drivers: ${error}`);
@@ -49,7 +64,7 @@ const App = () => {
 
     useEffect(() => {
         fetchDrivers();
-    }, [])
+    }, []);
 
     return (
         <main>
@@ -64,16 +79,16 @@ const App = () => {
                     <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
                 </header>
                 <section className="all-drivers">
-                    <h2>All Drivers</h2>
+                    <h2 className="mt-[40px]">All Drivers</h2>
 
                     {isLoading ? (
-                        <p className="text-white">Loading...</p>
+                        <Spinner />
                     ) : errorMesage ? (
                         <p className="tex-red-500">{errorMesage}</p>
                     ) : (
                         <ul>
                             {driverList.map((driver) => (
-                                <p className="text-white">{driver.broadcast_name}</p>
+                                <DriverCard key={driver.driver_number} driver={driver} />
                             ))}
                         </ul>
                     )}
