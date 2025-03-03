@@ -1,38 +1,39 @@
+
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
 
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #0d0d0d;
-  --color-accent: #ff1e00;
-  --color-light-100: #e0e0e0;
+  --color-primary: #030014;
+
+  --color-light-100: #cecefb;
+  --color-light-200: #a8b5db;
+
   --color-gray-100: #9ca4ab;
-  --color-dark-100: #1a1a1a;
-  --color-dark-200: #101010;
+
+  --color-dark-100: #0f0d23;
 
   --font-dm-sans: DM Sans, sans-serif;
-  --font-bebas: Bebas Neue, sans-serif;
 
   --breakpoint-xs: 480px;
-  --background-image-hero-pattern: url("/carbon-fiber-bg.png");
+
+  --background-image-hero-pattern: url("/public/hero-bg.png");
 }
 
 @layer base {
   body {
-    font-family: "DM Sans", sans-serif;
+    font-family: "DM Sans", serif;
     font-optical-sizing: auto;
-    background: var(--color-dark-200);
-    color: var(--color-light-100);
+    background: #030014;
   }
 
   h1 {
-    @apply mx-auto max-w-4xl text-center text-5xl font-bold leading-tight tracking-[-1%] text-white sm:text-[64px] sm:leading-[76px] uppercase;
-    font-family: var(--font-bebas);
+    @apply mx-auto max-w-4xl text-center text-5xl font-bold leading-tight tracking-[-1%] text-white sm:text-[64px] sm:leading-[76px];
   }
 
   h2 {
-    @apply text-2xl font-bold text-white sm:text-3xl uppercase;
+    @apply text-2xl font-bold text-white sm:text-3xl;
   }
 
   main {
@@ -73,12 +74,12 @@
     }
 
     & ul li img {
-      @apply w-[127px] h-[163px] rounded-lg object-cover -ml-3.5 border-2 border-accent;
+      @apply w-[127px] h-[163px] rounded-lg object-cover -ml-3.5;
     }
   }
 
   .search {
-    @apply w-full bg-light-100/5 px-4 py-3 rounded-lg mt-10 max-w-3xl mx-auto border border-gray-100;
+    @apply w-full bg-light-100/5 px-4 py-3 rounded-lg mt-10 max-w-3xl mx-auto;
 
     & div {
       @apply relative flex items-center;
@@ -89,11 +90,11 @@
     }
 
     & input {
-      @apply w-full bg-transparent py-2 sm:pr-10 pl-10 text-base text-white placeholder-gray-100 outline-none;
+      @apply w-full bg-transparent py-2 sm:pr-10 pl-10 text-base text-gray-200 placeholder-light-200 outline-hidden;
     }
   }
 
-  .all-drivers {
+  .all-movies {
     @apply space-y-9;
 
     & ul {
@@ -101,8 +102,8 @@
     }
   }
 
-  .driver-card {
-    @apply bg-dark-100 p-5 rounded-2xl shadow-inner shadow-accent/30 border border-gray-100 transition-transform transform hover:scale-105;
+  .movie-card {
+    @apply bg-dark-100 p-5 rounded-2xl shadow-inner shadow-light-100/10;
 
     & img {
       @apply rounded-lg h-auto w-full;
@@ -132,21 +133,24 @@
       @apply text-sm text-gray-100;
     }
 
-    & .content .driver-number, & .content .year {
+    & .content .lang {
       @apply capitalize text-gray-100 font-medium text-base;
+    }
+
+    & .content .year {
+      @apply text-gray-100 font-medium text-base;
     }
   }
 }
 
 @utility text-gradient {
-  @apply bg-gradient-to-r from-[#ff1e00] to-[#ff5733] bg-clip-text text-transparent;
+  @apply bg-linear-to-r from-[#D6C7FF] to-[#AB8BFF] bg-clip-text text-transparent;
 }
 
 @utility fancy-text {
-  -webkit-text-stroke: 3px rgba(255, 30, 0, 0.5);
+  -webkit-text-stroke: 5px rgba(206, 206, 251, 0.5);
   font-size: 190px;
-  font-family: var(--font-bebas);
-  letter-spacing: 2px;
+  font-family: "Bebas Neue", sans-serif;
 }
 
 @utility hide-scrollbar {

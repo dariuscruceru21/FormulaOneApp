@@ -1,69 +1,60 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react';
 import Search from "./components/Search.jsx";
 import Spinner from "./components/Spinner.jsx";
-import DriverCard from "./components/DriverCard.jsx";
+import MovieCard from "./components/MovieCard.jsx";
 
-const API_BASE_URL = 'https://api.openf1.org/v1';
+const API_BASE_URL = 'https://api.themoviedb.org/3';
+
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
 const API_OPTIONS = {
     method: 'GET',
     headers: {
         accept: 'application/json',
+        Authorization: `Bearer ${API_KEY}`
     }
 }
-
 const App = () => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [errorMesage, setErrorMesage] = useState('');
-    const [driverList, setDriverList] = useState([]);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [movieList, setMovieList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    const fetchDrivers = async () => {
+    const fetchMovies = async (query = '') => {
         setIsLoading(true);
-        setErrorMesage('');
+        setErrorMessage('');
 
         try {
-            const endpoint = `${API_BASE_URL}/drivers?session_key=latest`;
+            const endpoint = query
+                ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
+                : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
+
             const response = await fetch(endpoint, API_OPTIONS);
 
             if(!response.ok) {
-                throw Error('Failed to fetch Drivers');
+                throw new Error('Failed to fetch movies');
             }
 
             const data = await response.json();
 
-
-            if(data.Response ==='False'){
-                setErrorMesage(data.Error || 'Failed to fetch movies');
-                setDriverList([]);
+            if(data.Response === 'False') {
+                setErrorMessage(data.Error || 'Failed to fetch movies');
+                setMovieList([]);
                 return;
             }
 
-            //sort drivers by full_name ascending
-            const sortedDrivers = data.sort((a, b) => {
-                if(a.full_name < b.full_name){
-                    return -1;
-                }
-
-                if (a.full_name > b.full_name){
-                    return 1;
-                }
-
-                return 0;
-            });
-
-            setDriverList(sortedDrivers || []);
+            setMovieList(data.results || []);
 
         } catch (error) {
-            console.error(`Error fetching drivers: ${error}`);
-            setErrorMesage('Error fetching drivers. Please try again');
-        }finally {
+            console.error(`Error fetching movies: ${error}`);
+            setErrorMessage('Error fetching movies. Please try again later.');
+        } finally {
             setIsLoading(false);
         }
-    }
+    };
 
     useEffect(() => {
-        fetchDrivers();
+        fetchMovies();
     }, []);
 
     return (
@@ -72,31 +63,31 @@ const App = () => {
 
             <div className="wrapper">
                 <header>
-                    <img src="./hero.png" alt="Hero Banner"/>
-                    <h1>Find <span className="text-gradient">Formula One</span> Teams
-                        without the hassle</h1>
+                    <img src="./hero.png" alt="Hero Banner" />
+                    <h1>Find <span className="text-gradient">Movies</span> You'll Enjoy Without the Hassle</h1>
 
-                    <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
+                    <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
                 </header>
-                <section className="all-drivers">
-                    <h2 className="mt-[40px]">All Drivers</h2>
+
+
+                <section className="all-movies">
+                    <h2>All Movies</h2>
 
                     {isLoading ? (
                         <Spinner />
-                    ) : errorMesage ? (
-                        <p className="tex-red-500">{errorMesage}</p>
+                    ) : errorMessage ? (
+                        <p className="text-red-500">{errorMessage}</p>
                     ) : (
                         <ul>
-                            {driverList.map((driver) => (
-                                <DriverCard key={driver.driver_number} driver={driver} />
+                            {movieList.map((movie) => (
+                                <MovieCard key={movie.id} movie={movie} />
                             ))}
                         </ul>
                     )}
-
-                    {errorMesage && <p className="text-red-500">{errorMesage}</p>}
                 </section>
             </div>
         </main>
-    )
-}
-export default App
+    );
+};
+
+export default App;
