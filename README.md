@@ -19,7 +19,7 @@ Built with React.js for the user interface, Appwrite for the Trending Movies Alg
 - React.js
 - Appwrite
 - Tailwind CSS
-- 
+  
 ## <a name="features">🔋 Features</a>
 
 👉 **Browse All Movies**: Explore a wide range of movies available on the platform.
